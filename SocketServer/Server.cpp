@@ -61,7 +61,7 @@ void Server::ProcessClient(SOCKET hSock)
 				}
 			}
 
-			Message ms = Message::send(m.header.from, MT_GETUSERS, str);
+			Message ms = Message(m.header.from, MR_BROKER, MT_GETUSERS, str);
 			iSession->second->add(ms);
 			iSession->second->updateLastInteraction();
 		}

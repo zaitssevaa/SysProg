@@ -55,7 +55,14 @@ Client::Client()
 		Menu();
 		cout << "Choose action: ";
 		int i;
-		cin >> i;
+
+		while ((cin >> i).fail())
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+			cout << "Enter i\n";
+		}
+
 		cout << endl;
 		switch (i)
 		{
@@ -63,7 +70,14 @@ Client::Client()
 		{
 			cout << "To: Client ";
 			int id;
-			cin >> id;
+
+			while ((cin >> id).fail())
+			{
+				cin.clear();
+				cin.ignore(10000, '\n');
+				cout << "Enter id\n";
+			}
+
 			cout << "Message: ";
 			string strmsg;
 			cin.ignore();

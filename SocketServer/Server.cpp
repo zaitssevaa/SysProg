@@ -97,16 +97,23 @@ void Server::IsActive()
 {
 	while (true)
 	{
+		std::vector<int> allIds(sessions.size());
 		for (auto& [id, session] : sessions)
 		{
-			if (!(session->stillActive()))
+			allIds.push_back(id);
+		}
+
+		for (int id : allIds)
+		{
+			auto sessionIt = sessions.find(id);
+
+			if (sessionIt != sessions.end() && !(sessionIt->second->stillActive()))
 			{
-				cout << "Time out. Client " << id << "disconnected" << endl;
-				sessions.erase(id);
-				break;
+				cout << "Time out. Client " << id <<" disconnected" << endl;
+				sessions.erase(sessionIt);
 			}
 		}
-		Sleep(1000);
+		Sleep(100);
 	}
 }
 

@@ -8,12 +8,15 @@ enum MessageTypes
 	MT_DATA,
 	MT_NODATA,
 	MT_CONFIRM,
-	MT_GETUSERS
+	MT_GETUSERS,
+	MT_GETLAST,
+	MT_INITSTORAGE
 };
 
 enum MessageRecipients
 {
 	MR_BROKER = 10,
+	MR_STORAGE = 20,
 	MR_ALL = 50,
 	MR_USER = 100   // users' ids from 100 (101,102,...)
 };

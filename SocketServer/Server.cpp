@@ -22,6 +22,7 @@ void Server::ProcessClient(SOCKET hSock)
 		break;
 	}
 
+	// хр сообщен
 	case MT_INITSTORAGE:
 	{
 		auto session = make_shared<Session>(MR_STORAGE);
@@ -39,6 +40,7 @@ void Server::ProcessClient(SOCKET hSock)
 		cout << "Client " << m.header.from << "disconnected" << endl;
 		break;
 	}
+
 	case MT_GETDATA:
 	{
 		auto iSession = sessions.find(m.header.from);
@@ -53,6 +55,7 @@ void Server::ProcessClient(SOCKET hSock)
 
 		break;
 	}
+	//
 	case MT_GETUSERS:
 	{
 		string str = "";
@@ -61,6 +64,7 @@ void Server::ProcessClient(SOCKET hSock)
 		{
 			for (auto& [id, session] : sessions)
 			{
+				// ≈сли сесси€ не €вл€етс€ сессией отправител€ (id != m.header.from) и не €вл€етс€ сессией "Storage" (id != MR_STORAGE),
 				if (id != m.header.from && id != MR_STORAGE)
 				{
 					str.append("Client ");
@@ -77,6 +81,7 @@ void Server::ProcessClient(SOCKET hSock)
 		}
 		break;
 	}
+	//
 	case MT_GETLAST:
 	{
 		if (m.header.from == MR_STORAGE)
@@ -99,17 +104,16 @@ void Server::ProcessClient(SOCKET hSock)
 				StorageSession->second->add(ms);
 			}
 		}
-
 		break;
 	}
 
 	default:
 	{
+		//  
 		auto iSessionFrom = sessions.find(m.header.from);
 		auto StorageSession = sessions.find(MR_STORAGE);
 		if (iSessionFrom != sessions.end() && m.header.from != MR_STORAGE)
 		{
-
 			auto iSessionTo = sessions.find(m.header.to);
 			if (iSessionTo != sessions.end())
 			{
@@ -122,8 +126,8 @@ void Server::ProcessClient(SOCKET hSock)
 				}
 			}
 			else if (m.header.to == MR_ALL)
+			// ≈сли сесси€ получател€ не была найдена и идентификатор получател€ равен MR_ALL, то это означает, что сообщение должно быть отправлено всем активным сесси€м, кроме сессии "Storage".
 			{
-
 				for (auto& [id, session] : sessions)
 				{
 					if (id != m.header.from && id != MR_STORAGE)
@@ -144,7 +148,7 @@ void Server::ProcessClient(SOCKET hSock)
 	}
 	}
 }
-
+//
 void Server::IsActive()
 {
 	while (true)

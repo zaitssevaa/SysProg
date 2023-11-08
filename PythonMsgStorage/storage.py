@@ -7,10 +7,9 @@ def ProcessMessages():
     while True:
         m = Message.SendMessage(MR_BROKER, MT_GETDATA)
         if (m.Header.Type == MT_DATA):
-            print("MT_DATA")
-            print(m.Header.To)
             print(m.Header.From)
             print(m.Data)
+            print()
             data = []
             try:
                 with open('msgs.json', 'r') as f:
@@ -26,8 +25,6 @@ def ProcessMessages():
                 print(f"New msg added to {m.Header.From}. \n")
 
         if (m.Header.Type == MT_GETLAST):
-            print("MT_GETLAST")
-            print(m.Header.To)
             print(m.Header.From)
             print(m.Data)
             taker = str(m.Header.From)

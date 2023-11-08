@@ -1,4 +1,3 @@
-
 #include "pch.h"
 #include "framework.h"
 #include "SocketClient.h"
@@ -14,7 +13,6 @@ void init()
 }
 
 // The one and only application object
-
 CWinApp theApp;
 
 using namespace std;

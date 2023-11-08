@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import cgi, pickle, cgitb, codecs, sys, datetime, os, html
 from msg import *
 

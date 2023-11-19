@@ -10,7 +10,9 @@ enum MessageTypes
 	MT_CONFIRM,
 	MT_GETUSERS,
 	MT_GETLAST,
-	MT_INITSTORAGE
+	MT_INITSTORAGE,
+	MT_GETLAST_PUBLIC,
+	MT_REST_SERVER
 };
 
 enum MessageRecipients
@@ -18,7 +20,9 @@ enum MessageRecipients
 	MR_BROKER = 10,
 	MR_STORAGE = 20,
 	MR_ALL = 50,
-	MR_USER = 100   // users' ids from 100 (101,102,...)
+	MR_USER = 100,   // users' ids from 100 (101,102,...)
+	MR_RESTSERVER = 400
+
 };
 
 struct MessageHeader

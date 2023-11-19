@@ -2,6 +2,7 @@
 #include "Server.h"
 
 int Server::maxID = MR_USER;
+int Server::restServerId = MR_RESTSERVER;
 
 void Server::ProcessClient(SOCKET hSock)
 {
@@ -30,6 +31,42 @@ void Server::ProcessClient(SOCKET hSock)
 		Message::send(s, session->id, MR_BROKER, MT_INITSTORAGE);
 		session->updateLastInteraction();
 		cout << "Storage connected" << endl;
+		break;
+	}
+
+	case MT_REST_SERVER:
+	{
+		//auto session = make_shared<Session>(restServerId, m.data, std::chrono::high_resolution_clock::now());
+		auto session = make_shared<Session>(restServerId);
+		sessions[session->id] = session;
+		restServerId = session->id;
+		Message::send(s, session->id, MR_BROKER, MT_REST_SERVER);
+		cout << "REST server entered" << endl;
+		break;
+	}
+
+	case MT_GETLAST_PUBLIC:
+	{
+		if (m.header.from == MR_STORAGE)
+		{
+			auto iSessionTo = sessions.find(m.header.to);
+			if (iSessionTo != sessions.end())
+			{
+				Message ms = Message(m.header.to, MR_BROKER, MT_GETLAST_PUBLIC, m.data);
+				iSessionTo->second->add(ms);
+			}
+		}
+		else
+		{
+			auto iSessionFrom = sessions.find(m.header.from);
+			auto StorageSession = sessions.find(MR_STORAGE);
+			if (StorageSession != sessions.end() && iSessionFrom != sessions.end())
+			{
+				iSessionFrom->second->updateLastInteraction();
+				Message ms = Message(MR_STORAGE, m.header.from, MT_GETLAST_PUBLIC);
+				StorageSession->second->add(ms);
+			}
+		}
 		break;
 	}
 

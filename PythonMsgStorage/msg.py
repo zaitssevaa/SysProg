@@ -8,12 +8,13 @@ MT_GETDATA		= 2
 MT_DATA			= 3
 MT_NODATA		= 4
 MT_CONFIRM		= 5
-MT_GETUSERS 	= 6
-MT_GETLAST  	= 7
-MT_INITSTORAGE = 8
+MT_GETUSERS     = 6
+MT_GETLAST 		= 7
+MT_INITSTORAGE 		= 8
+MT_GETLAST_PUBLIC       = 9
 
 MR_BROKER	= 10
-MR_STORAGE  = 20
+MR_STORAGE  	= 20
 MR_ALL		= 50
 MR_USER		= 100
 
@@ -51,6 +52,7 @@ class Message:
 		self.Header.Receive(s)
 		if self.Header.Size > 0:
 			self.Data = struct.unpack(f'{self.Header.Size}s', s.recv(self.Header.Size))[0].decode('cp866')
+
 
 	def SendMessage(To, Type = MT_DATA, Data=""):
 		HOST = 'localhost'
